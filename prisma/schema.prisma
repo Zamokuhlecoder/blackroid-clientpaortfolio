@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  name          String?
+  password      String
+  image         String?
+  bio           String?
+  portfolio     Portfolio?
+  projects      ClientProject[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Portfolio {
+  id            String     @id @default(cuid())
+  userId        String     @unique
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String     @default("My Portfolio")
+  description   String?
+  theme         String     @default("dark")
+  projects      ClientProject[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model ClientProject {
+  id            String     @id @default(cuid())
+  portfolioId   String
+  portfolio     Portfolio  @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title         String
+  description   String?
+  status        String     @default("planning") // planning, in-progress, completed
+  progress      Int        @default(0) // 0-100
+  startDate     DateTime?
+  targetDate    DateTime?
+  completedDate DateTime?
+  
+  images        String     @default("[]")
+  deliverables  String     @default("[]")
+  notes         String?
+  
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}

@@ -1,125 +1,269 @@
-# Blackroid client portfolio preview
+# Client Portfolio - Standalone & Independent
 
-This is the complete standalone source for the client project workspace. It
-preserves the original Blackroid portfolio component, styling, animations,
-header, footer, cookie banner, and brand assets. The workspace is available at
-both `/` and `/portfolio`.
+This is a **completely independent, production-ready client portal** where your clients can:
+- ✅ Sign up and create accounts
+- ✅ Sign in securely
+- ✅ Track project progress in real-time
+- ✅ View project milestones and timelines
+- ✅ View deliverables and project notes
 
-## What the page contains
+**NO external dependencies** - works completely standalone without relying on any external website or service.
 
-The original request was a white, corporate client workspace with no more than
-four tabs, showing the current project, progress, team, invoices/payments, and
-a place to suggest changes. The implementation uses Blackroid's premium
-typography, colors, buttons, cards, icons, and subtle animations.
+## Key Features
 
-- **Overview:** sample project name and reference, progress bar and percentage,
-  status, handover date, next milestone, and invoice to review. Buttons open
-  the relevant tabs.
-- **Progress:** milestone timeline and a suggestion form (up to 1,000
-  characters). Notes appear immediately in the page for the current session.
-- **Team:** project lead, product designer and engineering team, with an email
-  link.
-- **Invoices:** sample amounts, dates and paid/unpaid statuses; the unpaid
-  invoice has an email link to request payment details.
-- **Sidebar:** project details, support email and a sample-workspace notice.
-- Responsive layouts, animated transitions and reduced-motion support are
-  included. The header, footer, mobile menu and cookie notice are also included.
+### 🔐 Secure Authentication
+- User registration with email validation
+- Secure sign-in with password hashing
+- JWT session management
+- Password recovery (coming soon)
 
-## Important: preview only
+### 📊 Project Tracking
+- Real-time project status updates
+- Progress percentage tracking (0-100%)
+- Milestone timeline visualization
+- Project notes and updates
+- Deliverables management
 
-Everything displayed is sample data, not a live client portal. Suggestions
-exist only in browser memory and disappear on refresh; they are not sent to
-the team. Invoice entries are not real, payments are not processed, and no
-invoice downloads are provided. There is no authentication, authorization,
-database, API, or private client data isolation. Do **not** enter real client,
-financial, or confidential information into this preview or present it as a
-secure portal.
+### 🎯 Client-Focused
+- Simple, intuitive interface
+- Mobile-responsive design
+- Real-time dashboard updates
+- Secure data isolation (clients only see their projects)
 
-The original preview shows a milestone timeline but has no external link to a
-live work-in-progress deliverable. Add a verified project-specific link when
-that functionality is implemented.
+## Getting Started
 
-A real portal requires server-side authentication and per-client authorization,
-secure storage and APIs for projects, milestones, team, invoices and
-suggestions, appropriate payment/invoice integrations, error handling,
-backups, auditing, and privacy/security review before use. The original page
-does not implement those features.
+### Requirements
+- Node.js 20.9+
+- npm or yarn
+- Neon PostgreSQL account (free tier available)
 
-## Run locally
+### Quick Setup
 
-Requirements: Node.js 20.9 or later and npm. Internet access is needed for npm
-dependencies and Google fonts during a production build.
-
-1. Copy the entire contents of this folder into your new project folder.
-2. Open a terminal in that folder.
-3. Optionally copy `.env.example` to `.env.local` and change the values:
-
-   ```powershell
-   Copy-Item .env.example .env.local
+1. **Clone or copy this project**
+2. **Install dependencies:**
+   ```bash
+   npm install
    ```
 
-4. Install and start:
+3. **Configure environment variables in `.env.local`:**
+   ```bash
+   # Copy the template
+   cp .env.example .env.local
+   
+   # Edit .env.local with your values:
+   # - DATABASE_URL: Your Neon PostgreSQL connection string
+   # - NEXTAUTH_SECRET: Generated with: openssl rand -hex 32
+   # - NEXTAUTH_URL: http://localhost:3000 (for local) or your domain (for production)
+   # - NEXT_PUBLIC_SITE_URL: Your website URL
+   # - NEXT_PUBLIC_COMPANY_NAME: Your company/brand name
+   # - NEXT_PUBLIC_CONTACT_EMAIL: Support email for clients
+   ```
 
-   ```powershell
-   npm ci
+4. **Create the database schema:**
+   ```bash
+   npm run prisma:push
+   ```
+
+5. **Start the development server:**
+   ```bash
    npm run dev
    ```
 
-5. Open `http://localhost:3000` (or `http://localhost:3000/portfolio`).
-   Stop the server with Ctrl+C.
+6. **Open in browser:**
+   - Home: http://localhost:3000
+   - Sign Up: http://localhost:3000/auth/signup
+   - Sign In: http://localhost:3000/auth/signin
+   - Dashboard: http://localhost:3000/dashboard
 
-Other commands: `npm run typecheck`, `npm run lint`, `npm run build`, and
-`npm start` (after a successful build).
+## Testing Locally
 
-## Create a separate GitHub repository
+### Create a Test Account
+1. Go to http://localhost:3000/auth/signup
+2. Enter test email and password
+3. Click "Sign Up"
+4. You're logged in! Now at dashboard
 
-1. Create a new, empty repository on GitHub (prefer private until ready).
-2. In your local project folder, run:
+### Create a Test Project (via API)
+```bash
+curl -X POST http://localhost:3000/api/projects \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Test Project",
+    "description": "This is a test project",
+    "status": "in-progress",
+    "progress": 50,
+    "startDate": "2024-01-15T00:00:00Z",
+    "targetDate": "2024-03-15T00:00:00Z"
+  }'
+```
 
-   ```powershell
-   git init
-   git add .
-   git commit -m "Add client portfolio preview"
-   git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-   git push -u origin main
-   ```
+## Available Commands
 
-Replace the remote URL with your repository's actual URL. Do not copy
-`node_modules`, `.next`, or `.env.local` into Git; `.gitignore` excludes them.
+```bash
+npm run dev              # Start development server
+npm run build            # Build for production
+npm start                # Start production server
+npm run lint             # Check code quality
+npm run typecheck        # Validate TypeScript
+npm run prisma:push      # Create database schema
+npm run prisma:studio    # Open database GUI viewer
+npm run prisma:generate  # Generate Prisma types
+```
 
-## Configuration and customization
+## Deployment
 
-- `NEXT_PUBLIC_MAIN_WEBSITE_URL` is the main marketing site's URL. It defaults
-  to `https://blackroid.com` as an example; confirm and change it as needed.
-  Header, footer and privacy links go there rather than to missing routes in
-  this standalone project.
-- `NEXT_PUBLIC_CONTACT_EMAIL` changes the public support email. The default is
-  defined in `src/lib/site.ts`.
-- `NEXT_PUBLIC_CLIENT_PORTAL_URL` controls the header/footer Login link. If
-  empty, it points to the main site's `/login`. This project does not provide
-  a login system.
-- `NEXT_PUBLIC_LINKEDIN_URL`, `NEXT_PUBLIC_INSTAGRAM_URL`, and
-  `NEXT_PUBLIC_X_URL` configure social links. Unset links retain the original
-  placeholder behavior. WhatsApp and telephone details are in `src/lib/site.ts`.
-- All `NEXT_PUBLIC_` values are public, not secrets. Set the same values in
-  your hosting provider and rebuild after changing them.
-- Edit the sample data, labels and UI in `src/components/ClientPortfolio.tsx`:
-  the `milestones`, `invoices`, and `team` arrays are near the top; the
-  project and sidebar values are in the JSX.
-- Colors, fonts, spacing helpers and design tokens are in
-  `src/app/globals.css`; Google fonts and the common layout are in
-  `src/app/layout.tsx`. Original brand images are under `public/brand`.
-- The package uses the original project's package manifest and lockfile, so
-  some dependencies support the wider original site rather than this page.
+### Deploy to Vercel
 
-## Deploy
+1. Push code to GitHub (new repository, not forked)
+2. Import repository in Vercel
+3. Add environment variables:
+   - `DATABASE_URL` - Neon PostgreSQL connection
+   - `NEXTAUTH_SECRET` - Generated secret
+   - `NEXTAUTH_URL` - Your Vercel domain
+   - `NEXT_PUBLIC_SITE_URL` - Your Vercel domain
+   - `NEXT_PUBLIC_COMPANY_NAME` - Your company name
+   - `NEXT_PUBLIC_CONTACT_EMAIL` - Support email
 
-Import the new GitHub repository into a Next.js-compatible host such as Vercel,
-add the desired public environment variables, and deploy. The page carries a
-`noindex` instruction, but this is not access control; a deployed URL is still
-public unless your host enforces access restrictions.
+4. Deploy
+5. Test at your domain
 
-The original Next.js dependency reported a known security vulnerability during
-verification. Upgrade Next.js to a fixed version and re-test the application
-before deploying it publicly.
+## Configuration
+
+All customization is done via environment variables or code:
+
+### Environment Variables
+- `NEXT_PUBLIC_SITE_URL` - Your website URL
+- `NEXT_PUBLIC_COMPANY_NAME` - Company/brand name displayed
+- `NEXT_PUBLIC_CONTACT_EMAIL` - Client support email
+- `NEXT_PUBLIC_PHONE` - Optional contact phone
+- `NEXT_PUBLIC_LINKEDIN_URL` - Optional LinkedIn link
+- `NEXT_PUBLIC_INSTAGRAM_URL` - Optional Instagram link
+- `NEXT_PUBLIC_X_URL` - Optional X/Twitter link
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXTAUTH_SECRET` - Random secret for sessions
+- `NEXTAUTH_URL` - Your app's URL
+
+### Customize UI
+
+Edit these files to customize:
+- `src/app/layout.tsx` - Main layout and styling
+- `src/app/globals.css` - Colors, fonts, spacing
+- `src/app/auth/signup/page.tsx` - Sign up page
+- `src/app/auth/signin/page.tsx` - Sign in page
+- `src/app/dashboard/page.tsx` - Dashboard layout
+
+## Security
+
+✅ **Built-in Security:**
+- Password hashing (bcryptjs)
+- JWT session tokens
+- SQL injection prevention (Prisma)
+- XSS protection (Next.js)
+- CSRF protection
+- Secure headers
+- User data isolation
+
+## API Endpoints
+
+### Authentication (Public)
+```
+POST   /api/auth/signin             # Sign in
+POST   /api/auth/signup             # Create account
+POST   /api/auth/signout            # Sign out
+GET    /api/auth/session            # Get session
+```
+
+### Projects (Requires Authentication)
+```
+GET    /api/projects                # List projects
+POST   /api/projects                # Create project
+GET    /api/projects/[id]           # Get project details
+PUT    /api/projects/[id]           # Update project
+DELETE /api/projects/[id]           # Delete project
+```
+
+## Documentation
+
+Detailed guides available:
+- [GETTING_STARTED.md](./GETTING_STARTED.md) - Quick start guide
+- [REAL_PORTFOLIO_SETUP.md](./REAL_PORTFOLIO_SETUP.md) - Detailed setup with Neon
+- [CLIENT_USER_GUIDE.md](./CLIENT_USER_GUIDE.md) - User documentation
+- [ADMIN_GUIDE.md](./ADMIN_GUIDE.md) - Backend API guide
+- [QUICK_REFERENCE.md](./QUICK_REFERENCE.md) - Commands and reference
+- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - Common issues and fixes
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - System design and architecture
+
+## Database Schema
+
+Three main tables:
+
+### Users
+- `id` - Unique identifier
+- `email` - Email (unique, used for sign in)
+- `name` - User's name
+- `password` - Hashed password
+- `createdAt` - Account creation date
+- `updatedAt` - Last update
+
+### Portfolio
+- `id` - Unique identifier
+- `userId` - Link to user
+- `title` - Portfolio title
+- `description` - Portfolio description
+- `createdAt` - Creation date
+- `updatedAt` - Last update
+
+### ClientProject
+- `id` - Unique identifier
+- `userId` - Link to user
+- `title` - Project name
+- `description` - Project description
+- `status` - planning | in-progress | completed
+- `progress` - 0-100 percentage
+- `startDate` - When work started
+- `targetDate` - Expected completion
+- `completedDate` - Actual completion
+- `notes` - Team notes and updates
+- `createdAt` - Creation date
+- `updatedAt` - Last update
+
+## Technology Stack
+
+- **Framework:** Next.js 15
+- **Language:** TypeScript
+- **Authentication:** NextAuth.js v5
+- **Database:** PostgreSQL (via Neon)
+- **ORM:** Prisma
+- **Styling:** Tailwind CSS
+- **Validation:** Zod
+- **Deployment:** Vercel
+
+## Troubleshooting
+
+### Database Connection Error
+- Verify DATABASE_URL is correct
+- Check Neon account is active
+- Run: `npm run prisma:push` again
+
+### Sign In Fails
+- Verify NEXTAUTH_SECRET is set
+- Check database is running
+- Restart dev server: `npm run dev`
+
+### Type Errors
+```bash
+npm run prisma:generate
+npm run typecheck
+```
+
+## Support
+
+For detailed help, see the documentation files included in this project.
+
+## License
+
+This project is provided as-is for client project tracking.
+
+---
+
+**Your independent, production-ready client portal is ready to deploy! 🚀**

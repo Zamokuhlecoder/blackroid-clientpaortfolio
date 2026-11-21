@@ -1,35 +1,32 @@
-const mainWebsite = (process.env.NEXT_PUBLIC_MAIN_WEBSITE_URL || "https://blackroid.com").replace(/\/$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+const mainWebsite = process.env.NEXT_PUBLIC_MAIN_WEBSITE_URL || "https://blackroid.com";
 
 export const site = {
-  name: "Blackroid",
-  legalName: "Blackroid (Pty) Ltd",
-  tagline: "Engineering better businesses.",
+  name: "Blackroid Client Portfolio",
+  legalName: process.env.NEXT_PUBLIC_COMPANY_NAME || "Blackroid",
+  tagline: "Track your project progress in real-time.",
   description:
-    "Blackroid partners with organisations to solve complex business challenges, strengthen operations, and create lasting value through technology, engineering, and strategic execution.",
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, ""),
-  locale: "en_ZA",
-  country: "South Africa",
-  publicEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "Scofield@blackroid.com",
-  phone: "+27712233272",
-  phoneDisplay: "+27 71 223 3272",
-  /** Public profiles. WhatsApp opens a chat with the phone number above; the rest take their address from env. */
+    "A secure, professional client portal where you can track the progress of your projects, view milestones, and stay updated with your team.",
+  url: siteUrl,
+  locale: "en",
+  country: "",
+  publicEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "support@blackroid.com",
+  phone: process.env.NEXT_PUBLIC_PHONE || "",
+  phoneDisplay: process.env.NEXT_PUBLIC_PHONE_DISPLAY || "",
   social: {
-    linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || "#",
-    whatsapp: "https://wa.me/27712233272",
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "#",
-    x: process.env.NEXT_PUBLIC_X_URL || "#",
+    linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://linkedin.com/company/blackroid",
+    whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_URL || "",
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://instagram.com/blackroid",
+    x: process.env.NEXT_PUBLIC_X_URL || "https://x.com/blackroid",
   },
-  /** Where the client portal login lives. Until it is set, the Login links open the /login page. */
-  clientPortalUrl: process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL || `${mainWebsite}/login`,
+  clientPortalUrl: siteUrl,
   mainWebsite,
 } as const;
 
 export const navigation = [
-  { label: "Home", href: mainWebsite },
-  { label: "Services", href: `${mainWebsite}/services` },
-  { label: "Outsourcing", href: `${mainWebsite}/outsourced-development` },
-  { label: "About", href: `${mainWebsite}/about` },
-  { label: "Contact", href: `${mainWebsite}/contact` },
+  { label: "Home", href: "/" },
+  { label: "Sign In", href: "/auth/signin" },
+  { label: "Dashboard", href: "/dashboard" },
 ] as const;
 
 /** Builds a remote Unsplash URL (images are free-licence, served via next/image). */

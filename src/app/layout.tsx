@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter_Tight } from "next/font/google";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { CookieBanner } from "@/components/CookieBanner";
+import { Header } from "@/components/Header-Professional";
 import { Providers } from "@/components/Providers";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -20,20 +19,20 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Client portfolio preview | Blackroid",
-  description: "Preview the Blackroid client project workspace.",
-  robots: { index: false, follow: false },
+  title: `Blackroid Client Portfolio - Track Project Progress`,
+  description: "Blackroid's professional client portal for tracking project progress in real-time. Secure, transparent, and built for client success.",
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-ZA" className={`${interTight.variable} ${plexMono.variable}`}>
-      <body>
+    <html lang="en" className={`${interTight.variable} ${plexMono.variable}`}>
+      <body className="bg-white">
         <Providers>
           <Header />
-          <main id="main">{children}</main>
-          <Footer />
-          <CookieBanner />
+          <main id="main" className="pt-16">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
